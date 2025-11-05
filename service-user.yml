@@ -4,3 +4,6 @@ server:
 spring:
   application:
     name: service-user
+custom:
+  message: "✅ Config loaded successfully from Git!"
+
