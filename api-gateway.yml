@@ -2,19 +2,14 @@ server:
   port: 8080
 
 spring:
-  main:
-    web-application-type: reactive
-
   cloud:
     gateway:
-      server:
-        webflux:
-          routes:
-            - id: service-user
-              uri: http://localhost:9001
-              predicates:
-                - Path=/users/**
-            - id: service-order
-              uri: http://localhost:9002
-              predicates:
-                - Path=/orders/**
+      routes:
+        - id: service-user
+          uri: http://localhost:9001
+          predicates:
+            - Path=/users/**
+        - id: service-order
+          uri: http://localhost:9002
+          predicates:
+            - Path=/orders/**
