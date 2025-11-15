@@ -5,11 +5,21 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: auth-service
+          uri: http://localhost:9000
+          predicates:
+            - Path=/auth/**
+
         - id: service-user
           uri: http://localhost:9001
           predicates:
             - Path=/users/**
+          filters:
+            - AuthFilter
+
         - id: service-order
           uri: http://localhost:9002
           predicates:
             - Path=/orders/**
+          filters:
+            - AuthFilter
