@@ -1,0 +1,15 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: auth-service
+
+jwt:
+  secret: SECRETKEY123456789123456789
+  expiration: 86400000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
