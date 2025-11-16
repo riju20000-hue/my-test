@@ -10,7 +10,7 @@ spring:
 
       routes:
 
-        # AUTH SERVICE (NO X-Forwarded-For added)
+        # AUTH SERVICE (NO X-Forwarded-For)
         - id: auth-service
           uri: http://localhost:9000
           predicates:
@@ -18,20 +18,20 @@ spring:
           filters:
             - StripPrefix=1
 
-        # USER MICRO-SERVICE (ADD X-Forwarded-For)
+        # USER MICRO-SERVICE
         - id: service-user
           uri: http://localhost:9001
           predicates:
             - Path=/users/**
           filters:
             - StripPrefix=1
-            - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.address.hostAddress}
+            - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.hostString}
 
-        # ORDER MICRO-SERVICE (ADD X-Forwarded-For)
+        # ORDER MICRO-SERVICE
         - id: service-order
           uri: http://localhost:9002
           predicates:
             - Path=/orders/**
           filters:
             - StripPrefix=1
-            - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.address.hostAddress}
+            - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.hostString}
