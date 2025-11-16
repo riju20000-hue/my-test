@@ -5,36 +5,33 @@ spring:
   cloud:
     gateway:
 
-      # ENABLE automatic forwarding of X-Forwarded-For, X-Forwarded-Proto, etc.
       forwarded:
         enabled: true
 
-      default-filters:
-        # Forward the original client IP to downstream microservices
-        - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.address.hostAddress}
-
       routes:
 
-        # AUTH SERVICE (ALLOW login/register without token)
+        # AUTH SERVICE (NO X-Forwarded-For added)
         - id: auth-service
           uri: http://localhost:9000
           predicates:
             - Path=/auth/**
           filters:
-            - StripPrefix=1   # option, recommend for clean paths
+            - StripPrefix=1
 
-        # USER MICRO-SERVICE
+        # USER MICRO-SERVICE (ADD X-Forwarded-For)
         - id: service-user
           uri: http://localhost:9001
           predicates:
             - Path=/users/**
           filters:
             - StripPrefix=1
+            - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.address.hostAddress}
 
-        # ORDER MICRO-SERVICE
+        # ORDER MICRO-SERVICE (ADD X-Forwarded-For)
         - id: service-order
           uri: http://localhost:9002
           predicates:
             - Path=/orders/**
           filters:
             - StripPrefix=1
+            - AddRequestHeader=X-Forwarded-For, #{request.remoteAddress.address.hostAddress}
