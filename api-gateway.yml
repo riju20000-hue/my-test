@@ -37,7 +37,7 @@ spring:
             # Secured APIs — limit by USER ID from JWT
             - name: RequestRateLimiter
               args:
-                key-resolver: "#{@userKeyResolver}"
+                key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter.replenishRate: 5     # 5 req/sec per user
                 redis-rate-limiter.burstCapacity: 10
 
@@ -50,6 +50,6 @@ spring:
             # Secured APIs — limit by USER ID from JWT
             - name: RequestRateLimiter
               args:
-                key-resolver: "#{@userKeyResolver}"
+                key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter.replenishRate: 3     # 3 req/sec per user
                 redis-rate-limiter.burstCapacity: 5
