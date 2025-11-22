@@ -6,7 +6,7 @@ spring:
     name: api-gateway
 
   redis:
-    host: 172.23.16.1
+    host: 172.23.31.255
     port: 6379
 
   cloud:
