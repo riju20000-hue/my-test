@@ -15,38 +15,41 @@ spring:
         - AddRequestHeader=X-Forwarded-For, Passed
 
       routes:
+        # ================== AUTH SERVICE ==================
         - id: auth-service
           uri: http://localhost:9000
           predicates:
             - Path=/auth/**
           filters:
-            # Rate limit based on IP (no JWT for login/register)
+            # Public login/register — limit by IP
             - name: RequestRateLimiter
               args:
                 key-resolver: "#{@ipKeyResolver}"
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.replenishRate: 10    # 10 requests per second
+                redis-rate-limiter.burstCapacity: 20    # max burst
 
-        - id: service-user
+        # ================== USER SERVICE ==================
+        - id: user-service
           uri: http://localhost:9001
           predicates:
             - Path=/users/**
           filters:
-            # Rate limit based on LOGGED IN USER JWT
+            # Secured APIs — limit by USER ID from JWT
             - name: RequestRateLimiter
               args:
                 key-resolver: "#{@userKeyResolver}"
-                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.replenishRate: 5     # 5 req/sec per user
                 redis-rate-limiter.burstCapacity: 10
 
-        - id: service-order
+        # ================== ORDER SERVICE ==================
+        - id: order-service
           uri: http://localhost:9002
           predicates:
             - Path=/orders/**
           filters:
-            # Rate limit based on LOGGED IN USER JWT
+            # Secured APIs — limit by USER ID from JWT
             - name: RequestRateLimiter
               args:
                 key-resolver: "#{@userKeyResolver}"
-                redis-rate-limiter.replenishRate: 3
+                redis-rate-limiter.replenishRate: 3     # 3 req/sec per user
                 redis-rate-limiter.burstCapacity: 5
