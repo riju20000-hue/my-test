@@ -22,8 +22,8 @@ spring:
               args:
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter:
-                  replenishRate: 0.008333 # 1 request per 2 minutes
-                  burstCapacity: 1
+                  replenishRate: 10 
+                  burstCapacity: 20
                   
         # ================== USER SERVICE (Limit by USER ID) ==================
         - id: user-service
@@ -35,10 +35,10 @@ spring:
             - name: RequestRateLimiter
               args:
                 # Key resolver should be @userKeyResolver for secured routes
-                key-resolver: "#{@userKeyResolver}" 
-                redis-rate-limiter: # Use the nested block
-                  replenishRate: 5     # 5 req/sec per user
-                  burstCapacity: 10    # Increased burst for better feel
+                key-resolver: "#{@ipKeyResolver}" 
+                redis-rate-limiter: 
+                  replenishRate: 1    
+                  burstCapacity: 120  
 
         # ================== ORDER SERVICE (Limit by USER ID) ==================
         - id: order-service
@@ -50,9 +50,9 @@ spring:
             - name: RequestRateLimiter
               args:
                 # Key resolver should be @userKeyResolver for secured routes
-                key-resolver: "#{@userKeyResolver}"
-                redis-rate-limiter: # Use the nested block
-                  replenishRate: 3     # 3 req/sec per user
+                key-resolver: "#{@ipKeyResolver}"
+                redis-rate-limiter: 
+                  replenishRate: 3    
                   burstCapacity: 5
                   
   data:
