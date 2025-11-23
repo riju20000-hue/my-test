@@ -11,44 +11,50 @@ spring:
         - AddRequestHeader=X-Forwarded-For, Passed
 
       routes:
-        # ================== AUTH SERVICE ==================
+        # ================== AUTH SERVICE (Limit by IP) ==================
         - id: auth-service
           uri: http://localhost:9000
           predicates:
             - Path=/auth/**
           filters:
-            # Public login/register — limit by IP
+            # Public login/register — limit by IP (Correct Nested Style)
             - name: RequestRateLimiter
               args:
                 key-resolver: "#{@ipKeyResolver}"
-                redis-rate-limiter.replenishRate: 0.008333    # 10 requests per second
-                redis-rate-limiter.burstCapacity: 1    # max burst
-
-        # ================== USER SERVICE ==================
+                redis-rate-limiter:
+                  replenishRate: 0.008333 # 1 request per 2 minutes
+                  burstCapacity: 1
+                  
+        # ================== USER SERVICE (Limit by USER ID) ==================
         - id: user-service
           uri: http://localhost:9001
           predicates:
             - Path=/users/**
           filters:
-            # Secured APIs — limit by USER ID from JWT
+            # Secured APIs — limit by USER ID (Corrected Nested Style)
             - name: RequestRateLimiter
               args:
-                key-resolver: "#{@ipKeyResolver}"
-                redis-rate-limiter.replenishRate: 1     # 5 req/sec per user
-                redis-rate-limiter.burstCapacity: 1
+                # Key resolver should be @userKeyResolver for secured routes
+                key-resolver: "#{@userKeyResolver}" 
+                redis-rate-limiter: # Use the nested block
+                  replenishRate: 5     # 5 req/sec per user
+                  burstCapacity: 10    # Increased burst for better feel
 
-        # ================== ORDER SERVICE ==================
+        # ================== ORDER SERVICE (Limit by USER ID) ==================
         - id: order-service
           uri: http://localhost:9002
           predicates:
             - Path=/orders/**
           filters:
-            # Secured APIs — limit by USER ID from JWT
+            # Secured APIs — limit by USER ID (Corrected Nested Style)
             - name: RequestRateLimiter
               args:
-                key-resolver: "#{@ipKeyResolver}"
-                redis-rate-limiter.replenishRate: 3     # 3 req/sec per user
-                redis-rate-limiter.burstCapacity: 5
+                # Key resolver should be @userKeyResolver for secured routes
+                key-resolver: "#{@userKeyResolver}"
+                redis-rate-limiter: # Use the nested block
+                  replenishRate: 3     # 3 req/sec per user
+                  burstCapacity: 5
+                  
   data:
     redis:
       host: 172.23.28.102
