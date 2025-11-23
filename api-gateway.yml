@@ -22,7 +22,7 @@ spring:
               args:
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter.replenishRate: 1    # 10 requests per second
-                redis-rate-limiter.burstCapacity: 60    # max burst
+                redis-rate-limiter.burstCapacity: 120    # max burst
 
         # ================== USER SERVICE ==================
         - id: user-service
