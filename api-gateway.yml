@@ -37,8 +37,8 @@ spring:
                 # Key resolver should be @userKeyResolver for secured routes
                 key-resolver: "#{@ipKeyResolver}" 
                 redis-rate-limiter: 
-                  replenishRate: 1    
-                  burstCapacity: 120  
+                  replenishRate: 3    
+                  burstCapacity: 5  
 
         # ================== ORDER SERVICE (Limit by USER ID) ==================
         - id: order-service
