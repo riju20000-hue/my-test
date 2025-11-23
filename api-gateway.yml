@@ -38,7 +38,7 @@ spring:
                 key-resolver: "#{@ipKeyResolver}" 
                 redis-rate-limiter: 
                   replenishRate: 1    
-                  burstCapacity: 300
+                  burstCapacity: 500
                   requestedTokens: 100
 
         # ================== ORDER SERVICE (Limit by USER ID) ==================
