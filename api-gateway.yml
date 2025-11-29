@@ -53,8 +53,9 @@ spring:
                 # Key resolver should be @userKeyResolver for secured routes
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter: 
-                  replenishRate: 3    
-                  burstCapacity: 5
+                  replenishRate: 1    
+                  burstCapacity: 500
+                  requestedTokens: 100
                   
   data:
     redis:
