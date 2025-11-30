@@ -5,8 +5,19 @@ spring:
   application:
     name: service-user
 
-custom:
-  message: "✅ Config loaded successfully from Git!"
+  cloud:
+    openfeign:
+      micrometer:
+        enabled: true   # ⬅️ REQUIRED for Zipkin tracing of Feign calls
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0   # 100% tracing
+
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans  # Zipkin collector
 
 eureka:
   client:
@@ -16,15 +27,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
   instance:
-    prefer-ip-address: true
-    hostname: localhost     # ⬅️ FIX: Forces Eureka to use localhost
-    instance-id: service-user:${server.port}   # Optional but helps debugging
+    prefer-ip-address: true    # Ensures Eureka registers IP not hostname
+    instance-id: ${spring.application.name}:${server.port}
+    hostname: localhost        # ⬅️ Prevents HOSTNAME from becoming DESKTOP-XXXX
 
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-
-  zipkin:
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
+custom:
+  message: "✅ Config loaded successfully from Git!"
