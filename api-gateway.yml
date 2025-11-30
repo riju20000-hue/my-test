@@ -18,7 +18,7 @@ spring:
       routes:
         # ================== AUTH SERVICE ==================
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
             - Path=/auth/**
           filters:
@@ -31,7 +31,7 @@ spring:
 
         # ================== USER SERVICE ==================
         - id: service-user
-          uri: lb://SERVICE-USER    # MUST MATCH Eureka
+          uri: lb://service-user    # MUST MATCH Eureka
           predicates:
             - Path=/users/**
           filters:
@@ -45,7 +45,7 @@ spring:
 
         # ================== ORDER SERVICE ==================
         - id: service-order
-          uri: lb://SERVICE-ORDER   # MUST MATCH Eureka
+          uri: lb://service-order   # MUST MATCH Eureka
           predicates:
             - Path=/orders/**
           filters:
