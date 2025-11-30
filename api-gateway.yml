@@ -27,7 +27,7 @@ spring:
                   
         # ================== USER SERVICE (Limit by USER ID) ==================
         - id: user-service
-          uri: lb://service-user
+          uri: lb://SERVICE-USER
           predicates:
             - Path=/users/**
           filters:
