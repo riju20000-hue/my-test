@@ -27,7 +27,7 @@ spring:
                   
         # ================== USER SERVICE (Limit by USER ID) ==================
         - id: user-service
-          uri: http://localhost:9001
+          uri: lb://service-user
           predicates:
             - Path=/users/**
           filters:
@@ -43,7 +43,7 @@ spring:
 
         # ================== ORDER SERVICE (Limit by USER ID) ==================
         - id: order-service
-          uri: http://localhost:9002
+          uri: lb://service-order
           predicates:
             - Path=/orders/**
           filters:
