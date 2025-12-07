@@ -5,6 +5,11 @@ spring:
   application:
     name: service-user
 
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true   # ⬅️ Required because service-user calls service-order
+
 custom:
   message: "✅ Config loaded successfully from Git!"
 
@@ -17,8 +22,8 @@ eureka:
 
   instance:
     prefer-ip-address: true
-    hostname: localhost     # ⬅️ FIX: Forces Eureka to use localhost
-    instance-id: service-user:${server.port}   # Optional but helps debugging
+    hostname: localhost
+    instance-id: service-user:${server.port}
 
 management:
   tracing:
