@@ -70,7 +70,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: localhost     # Forces Eureka to use localhost
-    instance-id: service-order:${server.port}   # Optional but helps debugging
+    instance-id: api-gateway:${server.port}   # Optional but helps debugging
 
 # ========= Distributed Tracing (Optional) =========
 management:
