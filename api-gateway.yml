@@ -40,7 +40,7 @@ spring:
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter:
                   replenishRate: 1
-                  burstCapacity: 500
+                  burstCapacity: 800
                   requestedTokens: 100
 
         # ================== ORDER SERVICE ==================
@@ -54,7 +54,7 @@ spring:
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter:
                   replenishRate: 1
-                  burstCapacity: 500
+                  burstCapacity: 800
                   requestedTokens: 100
 
     # ========= Load Balancer Per Service =========
