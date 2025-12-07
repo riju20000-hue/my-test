@@ -31,7 +31,7 @@ spring:
 
         # ================== USER SERVICE ==================
         - id: service-user
-          uri: lb://service-user    # MUST MATCH Eureka
+          uri: lb://service-user
           predicates:
             - Path=/users/**
           filters:
@@ -45,7 +45,7 @@ spring:
 
         # ================== ORDER SERVICE ==================
         - id: service-order
-          uri: lb://service-order   # MUST MATCH Eureka
+          uri: lb://service-order
           predicates:
             - Path=/orders/**
           filters:
@@ -56,6 +56,20 @@ spring:
                   replenishRate: 1
                   burstCapacity: 500
                   requestedTokens: 100
+
+    # ========= Load Balancer Per Service =========
+    loadbalancer:
+      clients:
+
+        service-user:
+          configuration: round_robin      # 🔄 Rotates between instances
+
+        service-order:
+          configuration: random           # 🎲 Random instance selection
+
+        auth-service:
+          configuration: sticky_session   # 📌 Same instance for same client
+
 
   data:
     redis:
@@ -69,10 +83,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
-    hostname: localhost     # Forces Eureka to use localhost
-    instance-id: api-gateway:${server.port}   # Optional but helps debugging
+    hostname: localhost
+    instance-id: api-gateway:${server.port}
 
-# ========= Distributed Tracing (Optional) =========
+# ========= Distributed Tracing =========
 management:
   tracing:
     sampling:
