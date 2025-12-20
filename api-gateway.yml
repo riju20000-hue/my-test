@@ -17,6 +17,7 @@ spring:
 
       routes:
         # ================== AUTH SERVICE ==================
+        # Uses Sticky Sessions (configured in Java StickyLBConfig)
         - id: auth-service
           uri: lb://auth-service
           predicates:
@@ -30,6 +31,7 @@ spring:
                   burstCapacity: 20
 
         # ================== USER SERVICE ==================
+        # Uses Round Robin (Default behavior)
         - id: service-user
           uri: lb://service-user
           predicates:
@@ -44,6 +46,7 @@ spring:
                   requestedTokens: 100
 
         # ================== ORDER SERVICE ==================
+        # Uses Random selection (configured in Java RandomLBConfig)
         - id: service-order
           uri: lb://service-order
           predicates:
@@ -57,20 +60,7 @@ spring:
                   burstCapacity: 800
                   requestedTokens: 100
 
-    # ========= Load Balancer Per Service =========
-    loadbalancer:
-      clients:
-
-        service-user:
-          configuration: round_robin      # 🔄 Rotates between instances
-
-        service-order:
-          configuration: random           # 🎲 Random instance selection
-
-        auth-service:
-          configuration: sticky_session   # 📌 Same instance for same client
-
-
+  # Redis configuration for Rate Limiting
   data:
     redis:
       host: 172.23.28.102
@@ -94,3 +84,7 @@ management:
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Useful for debugging and monitoring
