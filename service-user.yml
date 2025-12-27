@@ -6,9 +6,14 @@ spring:
     name: service-user
 
   cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true   # 🔴 REQUIRED for Feign + Resilience4jspring:
+      okhttp:
+        enabled: true   # 🔴 REQUIRED
     loadbalancer:
       retry:
-        enabled: false   # service-user calls service-order
+        enabled: false  # ❌ Disable LB retry (use Resilience4j retry)
 
 custom:
   message: "✅ Config loaded successfully from Git!"
@@ -25,24 +30,21 @@ eureka:
     hostname: localhost
     instance-id: service-user:${server.port}
 
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-
-  zipkin:
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
 feign:
   client:
     config:
       default:
         connectTimeout: 2000
         readTimeout: 2000
+
+# ============================
+# RESILIENCE4J CONFIG
+# ============================
 resilience4j:
+
   circuitbreaker:
     instances:
-      service-order:
+      orderCB:                     # 🔴 MUST match annotation name
         register-health-indicator: true
         sliding-window-type: COUNT_BASED
         sliding-window-size: 10
@@ -56,3 +58,19 @@ resilience4j:
         wait-duration-in-open-state: 10s
 
         automatic-transition-from-open-to-half-open-enabled: true
+
+  retry:
+    instances:
+      orderRetry:                  # 🔴 Retry name
+        max-attempts: 3
+        wait-duration: 500ms
+        retry-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - feign.FeignException
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers,circuitbreakerevents
