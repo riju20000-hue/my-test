@@ -8,7 +8,7 @@ spring:
   cloud:
     loadbalancer:
       retry:
-        enabled: true   # ⬅️ Required because service-user calls service-order
+        enabled: true   # service-user calls service-order
 
 custom:
   message: "✅ Config loaded successfully from Git!"
@@ -33,3 +33,21 @@ management:
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      orderCB:
+        register-health-indicator: true
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+
+        permitted-number-of-calls-in-half-open-state: 3
+        wait-duration-in-open-state: 10s
+
+        automatic-transition-from-open-to-half-open-enabled: true
