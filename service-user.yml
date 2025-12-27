@@ -8,7 +8,7 @@ spring:
   cloud:
     loadbalancer:
       retry:
-        enabled: true   # service-user calls service-order
+        enabled: false   # service-user calls service-order
 
 custom:
   message: "✅ Config loaded successfully from Git!"
@@ -42,7 +42,7 @@ feign:
 resilience4j:
   circuitbreaker:
     instances:
-      orderCB:
+      service-order:
         register-health-indicator: true
         sliding-window-type: COUNT_BASED
         sliding-window-size: 10
