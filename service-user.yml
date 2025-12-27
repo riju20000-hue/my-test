@@ -8,7 +8,7 @@ spring:
   cloud:
     openfeign:
       circuitbreaker:
-        enabled: true   # 🔴 REQUIRED for Feign + Resilience4jspring:
+        enabled: false   # 🔴 REQUIRED for Feign + Resilience4jspring:
       okhttp:
         enabled: true   # 🔴 REQUIRED
     loadbalancer:
