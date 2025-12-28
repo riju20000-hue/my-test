@@ -6,9 +6,6 @@ spring:
     name: service-user
 
   cloud:
-    openfeign:
-      circuitbreaker:
-        enabled: true   # ✅ REQUIRED
     loadbalancer:
       retry:
         enabled: false
