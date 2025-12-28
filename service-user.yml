@@ -8,15 +8,13 @@ spring:
   cloud:
     openfeign:
       circuitbreaker:
-        enabled: true   # 🔴 REQUIRED for Feign + Resilience4jspring:
-      okhttp:
-        enabled: true   # 🔴 REQUIRED
+        enabled: true   # ✅ REQUIRED
     loadbalancer:
       retry:
-        enabled: false  # ❌ Disable LB retry (use Resilience4j retry)
+        enabled: false
 
-custom:
-  message: "✅ Config loaded successfully from Git!"
+  okhttp:
+    enabled: true       # ✅ REQUIRED for timeout testing
 
 eureka:
   client:
@@ -27,7 +25,6 @@ eureka:
 
   instance:
     prefer-ip-address: true
-    hostname: localhost
     instance-id: service-user:${server.port}
 
 feign:
@@ -44,24 +41,25 @@ resilience4j:
 
   circuitbreaker:
     instances:
-      orderCB:                     # 🔴 MUST match annotation name
+      orderCB:
         register-health-indicator: true
         sliding-window-type: COUNT_BASED
-        sliding-window-size: 10
-        minimum-number-of-calls: 5
-        timeout-duration: 3s
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
         failure-rate-threshold: 50
-        slow-call-rate-threshold: 50
-        slow-call-duration-threshold: 2s
-
-        permitted-number-of-calls-in-half-open-state: 3
         wait-duration-in-open-state: 10s
-
+        permitted-number-of-calls-in-half-open-state: 2
         automatic-transition-from-open-to-half-open-enabled: true
+
+  timelimiter:
+    instances:
+      orderCB:                # ✅ SAME NAME AS CIRCUIT BREAKER
+        timeout-duration: 3s  # ✅ THIS is where timeout belongs
+        cancel-running-future: true
 
   retry:
     instances:
-      orderRetry:                  # 🔴 Retry name
+      orderRetry:
         max-attempts: 3
         wait-duration: 500ms
         retry-exceptions:
