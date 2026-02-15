@@ -44,7 +44,7 @@ resilience4j:
 
   circuitbreaker:
     instances:
-      OrderClientgetOrder:                     # 🔴 MUST match annotation name
+      service-order:                     # 🔴 MUST match annotation name
         register-health-indicator: true
         sliding-window-type: COUNT_BASED
         sliding-window-size: 10
@@ -58,7 +58,7 @@ resilience4j:
 
   retry:
     instances:
-      OrderClientgetOrder:                  # 🔴 Retry name
+      service-order:                  # 🔴 Retry name
         max-attempts: 3
         wait-duration: 500ms
         retry-exceptions:
