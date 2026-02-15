@@ -44,24 +44,21 @@ resilience4j:
 
   circuitbreaker:
     instances:
-      orderCB:                     # 🔴 MUST match annotation name
+      service-order:                     # 🔴 MUST match annotation name
         register-health-indicator: true
         sliding-window-type: COUNT_BASED
         sliding-window-size: 10
         minimum-number-of-calls: 5
-        timeout-duration: 3s
         failure-rate-threshold: 50
         slow-call-rate-threshold: 50
         slow-call-duration-threshold: 2s
-
-        permitted-number-of-calls-in-half-open-state: 3
         wait-duration-in-open-state: 10s
-
+        permitted-number-of-calls-in-half-open-state: 3
         automatic-transition-from-open-to-half-open-enabled: true
 
   retry:
     instances:
-      orderRetry:                  # 🔴 Retry name
+      service-order:                  # 🔴 Retry name
         max-attempts: 3
         wait-duration: 500ms
         retry-exceptions:
