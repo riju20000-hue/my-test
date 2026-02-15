@@ -9,6 +9,8 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+        alphanumeric-ids:
+          enabled: false
         group:
           enabled: true
       okhttp:
