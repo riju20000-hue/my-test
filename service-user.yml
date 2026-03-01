@@ -74,7 +74,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,circuitbreakers,circuitbreakerevents
+        include: health,info,circuitbreakers,circuitbreakerevents,retries,retryevents
+  endpoint:
+    retries:
+      enabled: true
+    retryevents:
+      enabled: true
 logging:
   level:
     io.github.resilience4j.retry: DEBUG
