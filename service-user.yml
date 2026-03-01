@@ -75,3 +75,6 @@ management:
     web:
       exposure:
         include: health,info,circuitbreakers,circuitbreakerevents
+logging:
+  level:
+    io.github.resilience4j.retry: DEBUG
