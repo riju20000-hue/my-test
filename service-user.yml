@@ -8,7 +8,7 @@ spring:
   cloud:
     openfeign:
       circuitbreaker:
-        enabled: false
+        enabled: true
         alphanumeric-ids:
           enabled: false
         group:
