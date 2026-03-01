@@ -74,7 +74,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,circuitbreakers,circuitbreakerevents,retries,retryevents
+        include: health,info,metrics,circuitbreakers,circuitbreakerevents,retries,retryevents
   endpoint:
     retries:
       enabled: true
